@@ -21,6 +21,6 @@ namespace EventBus.Base
     public enum EventBusType
     {
         RabbitMQ = 0,
-        AzureServices = 1
+        AzureServiceBus = 1
     }
 }
