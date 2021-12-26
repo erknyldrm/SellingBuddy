@@ -106,7 +106,7 @@ namespace EventBus.AzureServiceBus
             subscriptionClient.RegisterMessageHandler(
                 async (message, token) =>
                 {
-                    var eventName = $"{message.Label}";
+                    var eventName = $"{ message.Label }";
                     var messageData = Encoding.UTF8.GetString(message.Body);
 
                     //Complete the message so that it is not received again 
@@ -165,7 +165,7 @@ namespace EventBus.AzureServiceBus
             {
                 subscriptionClient.AddRuleAsync(new RuleDescription
                 {
-                    Filter = new CorrelationFilter(),
+                    Filter = new CorrelationFilter { Label = eventName },
                     Name = eventName,
                 }).GetAwaiter().GetResult();
             }
@@ -177,7 +177,7 @@ namespace EventBus.AzureServiceBus
             {
                 subscriptionClient.RemoveRuleAsync(RuleDescription.DefaultRuleName).GetAwaiter().GetResult();
             }
-            catch (Exception ex)
+            catch (MessagingEntityNotFoundException)
             {
                 logger.LogWarning("The messaging entity {DefaultRuleName} could not be found", RuleDescription.DefaultRuleName);
             }
