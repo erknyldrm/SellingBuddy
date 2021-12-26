@@ -88,6 +88,8 @@ namespace EventBus.RabbitMQ
 
                 consumerChannel.QueueDeclare(queue: GetSubName(eventName), durable: true, exclusive: false, autoDelete: true, arguments: null);
 
+                consumerChannel.QueueBind(queue: GetSubName(eventName), exchange: EventBusConfig.DefaultTopicName, routingKey: eventName);
+
                 consumerChannel.BasicPublish(exchange: EventBusConfig.DefaultTopicName, routingKey: eventName, mandatory: true, basicProperties: properties, body: body);
             });
         }
@@ -155,7 +157,7 @@ namespace EventBus.RabbitMQ
             {
                 await ProcessEvent(eventName, message);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ///logging
             }
