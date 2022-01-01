@@ -33,7 +33,7 @@ namespace CatalogService.Api.Extensions
                             TimeSpan.FromSeconds(7),
                         });
 
-                    retry.Execute(() => InvokeSeeder(seeder, context, services));
+                 //   retry.Execute(() => InvokeSeeder(seeder, context, services)); // there is no db on this pc
 
                     logger.LogInformation("Migratiın database associated with context {DbContextName}", typeof(TContext).Name);
 
