@@ -5,12 +5,6 @@
       "ServiceName": "CatalogService",
       "DownstreamPathTemplate": "/api/catalog/{everything}",
       "DownstreamScheme": "http",
-      //"DownstreamHostAndPorts": [
-      //  {
-      //    "Host": "localhost",
-      //    "Port": 5004
-      //  }
-      //],
 
       "UpstreamPathTemplate": "/catalog/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
@@ -22,15 +16,20 @@
 
       "DownstreamPathTemplate": "/api/auth",
       "DownstreamScheme": "http",
-      //"DownstreamHostAndPorts": [
-      //  {
-      //    "Host": "localhost",
-      //    "Port": 5005
-      //  }
-      //],
 
       "UpstreamPathTemplate": "/auth",
-      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamHttpMethod": ["Get", "Post" ],
+      "UpstreamScheme": "http"
+    },
+    {
+      "UseServiceDiscovery": true,
+      "ServiceName": "BasketService",
+
+      "DownstreamPathTemplate": "/api/basket/{everthing}",
+      "DownstreamScheme": "http",
+
+      "UpstreamPathTemplate": "/basket/{everthing}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
       "UpstreamScheme": "http"
     }
   ],
