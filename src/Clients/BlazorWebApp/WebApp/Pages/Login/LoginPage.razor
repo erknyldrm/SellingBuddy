@@ -1,0 +1,30 @@
+﻿@page "/login"
+
+@using System.Web
+
+<h3>LoginPage</h3>
+
+@code {
+
+    [Inject]
+    IdentityService identityService { get; set; }
+
+    [Inject]
+    NavigationManager navigationManager { get; set; }
+
+    private UserLoginRequest userLoginRequest = new UserLoginRequest("","");
+
+    private async Task loginProcess()
+    {
+        var res = await identityService.Login(userLoginRequest.UserName, userLoginRequest.Password);
+
+        if(res)
+        {
+            var coll = HttpUtility.ParseQueryString(new Uri(navigationManager.Uri).Query);
+
+            string returnUrl = coll.Get("returnUrl") ?? "/";
+
+            navigationManager.NavigateTo(returnUrl);
+        }
+    }
+}
