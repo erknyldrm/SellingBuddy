@@ -24,6 +24,7 @@ namespace WebApp
 
             builder.Services.AddTransient<IIdentityService, IdentityService>();
             builder.Services.AddTransient<ICatalogService, CatalogService>();
+            builder.Services.AddTransient<IBasketService,BasketService>();
 
             builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 
