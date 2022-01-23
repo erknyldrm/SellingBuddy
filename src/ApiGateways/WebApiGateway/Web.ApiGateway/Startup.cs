@@ -1,19 +1,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Provider.Consul;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Web.ApiGateway.Infrastructure;
 
 namespace Web.ApiGateway
 {
@@ -43,6 +39,8 @@ namespace Web.ApiGateway
                 .AllowAnyHeader()
                 .AllowCredentials());
             });
+
+            ConfigureHttpClient(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,5 +68,22 @@ namespace Web.ApiGateway
 
             await app.UseOcelot();
         }
+
+        private void ConfigureHttpClient(IServiceCollection services)
+        {
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddHttpClient("basket", c =>
+            {
+                c.BaseAddress = new Uri(Configuration["urls:basket"]);
+            })
+            .AddHttpMessageHandler<HttpClientDelegatingHandler>();
+
+            services.AddHttpClient("catalog", c =>
+            {
+                c.BaseAddress = new Uri(Configuration["urls:catalog"]);
+            })
+            .AddHttpMessageHandler<HttpClientDelegatingHandler>();
+        }
     }
+
 }
