@@ -2,7 +2,7 @@
 
 namespace OrderService.Domain.Models
 {
-    internal class CustomerBasket
+    public class CustomerBasket
     {
         public string BuyerId { get; set; }
         public List<BasketItem> Items { get; set; } = new List<BasketItem>();
