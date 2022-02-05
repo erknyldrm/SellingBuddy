@@ -1,6 +1,6 @@
 ﻿namespace OrderService.Domain.Models
 {
-    internal class BasketItem
+    public class BasketItem
     {
         public string Id { get; set; }
         public int ProductId { get; set; }
