@@ -16,7 +16,7 @@ namespace OrderService.Infrastructure.Extensions
 
             var domainEvents = domainEntities.SelectMany(x=>x.Entity.DomainEvents).ToList();
 
-            domainEntities.ToList().Foreach(e => e.Entity.ClearDomainEvents());
+            domainEntities.ToList().ForEach(e => e.Entity.ClearDomainEvents());
 
             foreach (var domainEvent in domainEvents)
                 await mediator.Publish(domainEvent);

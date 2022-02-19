@@ -1,21 +1,17 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using OrderService.Api.Extensions;
-using System;
-using System.Collections.Generic;
+using OrderService.Infrastructure.Context;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using OrderService.Application;
 
 namespace OrderService.Api
 {
     public class Program
-    {,
+    {
         public static void Main(string[] args)
         {
             var host = BuildWebHost(GetConfiguration(), args);
@@ -36,6 +32,7 @@ namespace OrderService.Api
            .UseDefaultServiceProvider((context, options) =>
            {
                options.ValidateOnBuild = false;
+               options.ValidateScopes = false;
            })
             .ConfigureAppConfiguration(p=>p.AddConfiguration(configuration))
             .UseStartup<Startup>()
