@@ -59,8 +59,8 @@ namespace OrderService.Infrastructure.Context
             var fileContent = File.ReadAllText(fileName);
 
             int id = 1;
-            var list = fileContent.Select(i => new OrderStatus(id++, i)).Where(i => i != null);
-            return list;    
+            var list = fileContent.Select(i => new OrderStatus(id++, i.ToString())).Where(i => i != null);
+            return (IEnumerable<CardType>)list;
         }
 
         private IEnumerable<CardType> GetPredefinedCardTypes()

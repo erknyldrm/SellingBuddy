@@ -1,15 +1,12 @@
 ﻿using Consul;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting.Server.Features;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Linq;
 
-namespace OrderService.Api.Extensions.Registration.ServiceDİscovery
+namespace OrderService.Api.Extensions.Registration.ServiceDiscovery
 {
     public static class ConsulConfiguration
     {
@@ -24,7 +21,7 @@ namespace OrderService.Api.Extensions.Registration.ServiceDİscovery
             return services;
         }
 
-        public static IApplicationBuilder RegisterWithConsul(this IApplicationBuilder app, IHostApplicationLifetime lifetime)
+        public static IApplicationBuilder RegisterWithConsul(this IApplicationBuilder app, IHostApplicationLifetime lifetime, IConfiguration configuration)
         {
             var consulClient = app.ApplicationServices.GetRequiredService<IConsulClient>();
 
@@ -32,18 +29,17 @@ namespace OrderService.Api.Extensions.Registration.ServiceDİscovery
 
             var logger = loggingFactory.CreateLogger<IApplicationBuilder>();
 
-            var features = app.Properties["server.Features"] as FeatureCollection;
-            var addresses = features.Get<IServerAddressesFeature>();
-            var address = addresses.Addresses.First();
+            var uri = configuration.GetValue<Uri>("ConsulConfig:ServiceAddress");
+            var serviceName = configuration.GetValue<string>("ConsulConfig:ServiceName");
+            var serviceId = configuration.GetValue<string>("ConsulConfig:ServiceId");
 
-            var uri = new Uri(address);
             var registration = new AgentServiceRegistration()
             {
-                ID = $"OrderService",
-                Name = "OrderService",
+                ID = serviceId ?? $"OrderService",
+                Name = serviceName ?? "OrderService",
                 Address = $"{uri.Host}",
                 Port = uri.Port,
-                Tags = new[] { "Ordering Service", "Order" }
+                Tags = new[] { serviceName, serviceId }
             };
 
             logger.LogInformation("Registering with Consul");
